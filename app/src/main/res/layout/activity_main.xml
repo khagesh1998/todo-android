@@ -33,12 +33,17 @@
             android:hint="@string/placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:placeholderTextColor="@color/secondary"
+            app:endIconMode="clear_text"
+            app:hintTextColor="@color/green"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
+                android:textColor="@color/black"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -50,7 +55,11 @@
             android:layout_marginEnd="4dp"
             android:text="@string/button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/green"
+            android:hapticFeedbackEnabled="true"
+            app:circularflow_radiusInDP="12"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
