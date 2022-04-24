@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Android1</string>
+    <string name="app_name">AndroidKotlin</string>
     <string name="title">Todo List</string>
     <string name="placeholder">Enter TODO</string>
     <string name="button">Add</string>
+    <string name="dummy">Dummy</string>
 </resources>
