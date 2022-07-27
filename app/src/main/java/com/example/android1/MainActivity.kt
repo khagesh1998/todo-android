@@ -24,10 +24,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addTodo(view: View, input: EditText){
-        val dummy = input.text.toString()
+        val dummy = input.text.toString().trim()
+        if(dummy==""){
+            return
+        }
         Toast.makeText(this,dummy,Toast.LENGTH_LONG).show()
         hideSoftKeyboard(view)
-        dataSet = dataSet + Todo(dummy,false)
+        dataSet = dataSet + Todo(dummy)
         mAdapter?.updateData(dataSet)
         findViewById<EditText>(R.id.todoInput).setText("")
     }
@@ -46,12 +49,12 @@ class MainActivity : AppCompatActivity() {
         val input = findViewById<EditText>(R.id.todoInput)
         val button = findViewById<Button>(R.id.todoButton)
 
-        // Click on button to add to TODO list
+        // Click on button to add to list
         button.setOnClickListener {view->
             addTodo(view,input)
         }
 
-        // Enter to add to TODO list
+        // Enter to add to list
         input.setOnKeyListener { view, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 addTodo(view,input)
