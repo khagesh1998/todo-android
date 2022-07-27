@@ -18,7 +18,7 @@ class TodoItem(private var dataSet: List<Todo>):RecyclerView.Adapter<TodoItem.Vi
 
     fun updateData(dataSet: List<Todo>) {
         this.dataSet = dataSet
-        notifyDataSetChanged()
+        notifyItemInserted(this.dataSet.size-1)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
