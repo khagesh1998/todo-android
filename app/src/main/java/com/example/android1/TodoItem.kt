@@ -16,9 +16,12 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val checkBox: CheckBox = view.findViewById(R.id.checkBox)
 }
 
-class TodoItem(private var dataSet: List<Todo>):RecyclerView.Adapter<ViewHolder>() {
-    fun updateData(dataSet: List<Todo>) {
-        this.dataSet = dataSet
+class TodoItem(private var dataSet: MutableList<Todo>):RecyclerView.Adapter<ViewHolder>() {
+    fun addOnTop(todo: Todo){
+//        this.dataSet.add(0,todo)
+        this.dataSet.add(todo)
+        println("--------------------"+this.dataSet.size)
+//        notifyItemInserted(0)
         notifyItemInserted(this.dataSet.size-1)
     }
 
