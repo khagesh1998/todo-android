@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
-    private val dataSet:Array<Todo> = Array(5){ Todo("title",false) }
+    private var dataSet:List<Todo> = emptyList()
+    var mAdapter: TodoItem?=null
 
     private fun hideSoftKeyboard(view: View) {
         val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         val dummy = input.text.toString()
         Toast.makeText(this,dummy,Toast.LENGTH_LONG).show()
         hideSoftKeyboard(view)
+        dataSet = dataSet + Todo(dummy,false)
+        mAdapter?.updateData(dataSet)
+        findViewById<EditText>(R.id.todoInput).setText("")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +40,8 @@ class MainActivity : AppCompatActivity() {
         val linearLayoutManager = LinearLayoutManager(applicationContext)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = TodoItem(dataSet)
+        mAdapter = TodoItem(dataSet)
+        recyclerView.adapter = mAdapter
 
         val input = findViewById<EditText>(R.id.todoInput)
         val button = findViewById<Button>(R.id.todoButton)
