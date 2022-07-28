@@ -14,15 +14,20 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val textView: TextView = view.findViewById(R.id.listItemTitle)
     val button: Button = view.findViewById(R.id.listItemButton)
     val checkBox: CheckBox = view.findViewById(R.id.checkBox)
+
+    fun bind(onClick: (position: Int) -> Unit) {
+        button.setOnClickListener {
+            onClick(adapterPosition)
+        }
+    }
 }
 
-class TodoItem(private var dataSet: MutableList<Todo>):RecyclerView.Adapter<ViewHolder>() {
-    fun addOnTop(todo: Todo){
-//        this.dataSet.add(0,todo)
-        this.dataSet.add(todo)
-        println("--------------------"+this.dataSet.size)
-//        notifyItemInserted(0)
-        notifyItemInserted(this.dataSet.size-1)
+class TodoItem() : RecyclerView.Adapter<ViewHolder>() {
+    private var dataSet: MutableList<Todo> = mutableListOf()
+
+    fun addOnTop(todo: Todo) {
+        this.dataSet.add(0,todo)
+        notifyItemInserted(0)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -33,17 +38,17 @@ class TodoItem(private var dataSet: MutableList<Todo>):RecyclerView.Adapter<View
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.textView.text = dataSet[position].title
-        if(dataSet[position].isChecked){
+        if (dataSet[position].isChecked) {
             viewHolder.textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             viewHolder.textView.setTextColor(Color.parseColor("#023020"))
-        }else{
+        } else {
             viewHolder.textView.paintFlags = Paint.ANTI_ALIAS_FLAG
             viewHolder.textView.setTextColor(Color.RED)
         }
         viewHolder.checkBox.isChecked = dataSet[position].isChecked
-        viewHolder.button.setOnClickListener {
-            dataSet[position].isChecked = !dataSet[position].isChecked
-            notifyItemChanged(position)
+        viewHolder.bind { p ->
+            dataSet[p].isChecked = !dataSet[p].isChecked
+            notifyItemChanged(p)
         }
     }
 
