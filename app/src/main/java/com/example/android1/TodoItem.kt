@@ -11,13 +11,32 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val textView: TextView = view.findViewById(R.id.listItemTitle)
-    val button: Button = view.findViewById(R.id.listItemButton)
-    val checkBox: CheckBox = view.findViewById(R.id.checkBox)
+    private val textView: TextView = view.findViewById(R.id.listItemTitle)
+    private val button: Button = view.findViewById(R.id.listItemButton)
+    private val checkBox: CheckBox = view.findViewById(R.id.checkBox)
 
-    fun bind(onClick: (position: Int) -> Unit) {
+    fun update(todo: Todo){
+        textView.text = todo.title
+        if (todo.isChecked) {
+            textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            textView.setTextColor(Color.parseColor("#023020"))
+        } else {
+            textView.paintFlags = Paint.ANTI_ALIAS_FLAG
+            textView.setTextColor(Color.RED)
+        }
+        checkBox.isChecked = todo.isChecked
+    }
+
+    fun onClick(onClickCallback: (position: Int) -> Unit) {
         button.setOnClickListener {
-            onClick(adapterPosition)
+            onClickCallback(adapterPosition)
+        }
+    }
+
+    fun onLongClick(onClickCallback: (position: Int) -> Unit){
+        button.setOnLongClickListener{
+            onClickCallback(adapterPosition)
+            true
         }
     }
 }
@@ -30,6 +49,16 @@ class TodoItem() : RecyclerView.Adapter<ViewHolder>() {
         notifyItemInserted(0)
     }
 
+    private fun handleClick(viewHolder: ViewHolder){
+        viewHolder.onClick { p ->
+            dataSet[p].isChecked = !dataSet[p].isChecked
+            notifyItemChanged(p)
+        }
+        viewHolder.onLongClick {
+
+        }
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item, viewGroup, false)
@@ -37,19 +66,8 @@ class TodoItem() : RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.textView.text = dataSet[position].title
-        if (dataSet[position].isChecked) {
-            viewHolder.textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            viewHolder.textView.setTextColor(Color.parseColor("#023020"))
-        } else {
-            viewHolder.textView.paintFlags = Paint.ANTI_ALIAS_FLAG
-            viewHolder.textView.setTextColor(Color.RED)
-        }
-        viewHolder.checkBox.isChecked = dataSet[position].isChecked
-        viewHolder.bind { p ->
-            dataSet[p].isChecked = !dataSet[p].isChecked
-            notifyItemChanged(p)
-        }
+        viewHolder.update(dataSet[position])
+        handleClick(viewHolder)
     }
 
     override fun getItemCount() = dataSet.size
